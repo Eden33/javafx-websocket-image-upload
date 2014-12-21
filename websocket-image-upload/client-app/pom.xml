@@ -18,6 +18,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <mainClass>com.eden.javafx.test.client.MainApp</mainClass>
     </properties>
+    
+    <dependencies>
+        <dependency>
+            <groupId>org.glassfish.tyrus.bundles</groupId>
+            <artifactId>tyrus-standalone-client-jdk</artifactId>
+            <version>1.9</version>
+        </dependency>
+    </dependencies>
 
     <organization>
         <!-- Used as the 'Vendor' for JNLP generation -->

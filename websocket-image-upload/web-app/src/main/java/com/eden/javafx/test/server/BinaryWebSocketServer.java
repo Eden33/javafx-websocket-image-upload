@@ -30,11 +30,13 @@ public class BinaryWebSocketServer {
 
   @OnOpen
   public void onOpen(Session session) {
+    Logger.getLogger(BinaryWebSocketServer.class.getName()).log(Level.INFO, "client connection opened");
     sessions.add(session);
   }
 
   @OnClose
   public void onClose(Session session) {
+    Logger.getLogger(BinaryWebSocketServer.class.getName()).log(Level.INFO, "client connection closed");
     sessions.remove(session);
   }
 
