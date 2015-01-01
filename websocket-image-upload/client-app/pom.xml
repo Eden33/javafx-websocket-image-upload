@@ -26,7 +26,7 @@
             <version>1.9</version>
         </dependency>
     </dependencies>
-
+    
     <organization>
         <!-- Used as the 'Vendor' for JNLP generation -->
         <name>Your Organisation</name>
@@ -96,10 +96,8 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>${mcp.version}</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
                     <compilerArguments>
                         <bootclasspath>${sun.boot.class.path}${path.separator}${java.home}/lib/jfxrt.jar</bootclasspath>
                     </compilerArguments>
