@@ -1,5 +1,6 @@
 package com.eden.javafx.test.client;
 
+import com.eden.javafx.test.async.UpdateImageViewAsync;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -9,6 +10,7 @@ import java.net.URI;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -42,9 +44,16 @@ public class MainApp extends Application {
 
   @OnMessage
   public void onMessage(InputStream input) {
-    LOGGER.log(Level.INFO, "new message from server");
-    Image image = new Image(input);
-    imageView.setImage(image);
+      
+      int availableBytes = -1;
+      try {
+          availableBytes = input.available();
+     } catch(IOException e) {
+         LOGGER.log(Level.SEVERE, "", e);
+     }
+      
+     LOGGER.log(Level.INFO, "New message from server. Bytes: " + availableBytes);
+     Platform.runLater(new UpdateImageViewAsync(this.imageView, new Image(input)));
   }
 
   @OnClose
@@ -100,15 +109,24 @@ public class MainApp extends Application {
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Select Image to Send");
     File file = fileChooser.showOpenDialog(stage);
+    LOGGER.log(Level.INFO, "Size of choosen file is: " + file.length());
+    
     try (InputStream input = new FileInputStream(file);
             OutputStream output = session.getBasicRemote().getSendStream()) {
       byte[] buffer = new byte[1024];
       int read;
+      int ctr = 0;
       while ((read = input.read(buffer)) > 0) {
+        ctr++;
+        LOGGER.log(Level.INFO, "sending image bytes: " + (1024 * (ctr - 1)) + " to " + (((1024 * ctr) - 1) + read));
         output.write(buffer, 0, read);
       }
     } catch (IOException ex) {
-      LOGGER.log(Level.SEVERE, "sending image failed!", ex);
+      LOGGER.log(Level.SEVERE, "sending image failed 1!", ex);
+    } catch(Exception ex) {
+      LOGGER.log(Level.SEVERE, "sending image failed 2!", ex);        
+    } catch(Throwable t) {
+       LOGGER.log(Level.SEVERE, "sending image failed 3!", t);       
     }
   }
 
