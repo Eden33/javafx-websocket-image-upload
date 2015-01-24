@@ -42,7 +42,7 @@ public class MainApp extends Application {
     this.session = session;
   }
 
-  @OnMessage
+  @OnMessage(maxMessageSize = 1024 * 1024 * 10)
   public void onMessage(InputStream input) {
       
       int availableBytes = -1;
@@ -118,7 +118,7 @@ public class MainApp extends Application {
       int ctr = 0;
       while ((read = input.read(buffer)) > 0) {
         ctr++;
-        LOGGER.log(Level.INFO, "sending image bytes: " + (1024 * (ctr - 1)) + " to " + (((1024 * ctr) - 1) + read));
+        LOGGER.log(Level.INFO, "sending image bytes: " + (1024 * (ctr - 1)) + " to " + ((1024 * (ctr - 1)) + read));
         output.write(buffer, 0, read);
       }
     } catch (IOException ex) {

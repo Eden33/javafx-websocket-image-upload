@@ -42,7 +42,7 @@ public class BinaryWebSocketServer {
   }
 
   private int ctr = 0;
-  @OnMessage
+  @OnMessage(maxMessageSize = 1024 * 1024 * 10)
   public void onMessage(ByteBuffer byteBuffer) {
     ctr++;
     LOGGER.log(Level.INFO, "Byte data incoming: " + byteBuffer.array().length + " - ctr: " + ctr);
